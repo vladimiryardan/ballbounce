@@ -45,7 +45,7 @@ window.requestAnimFrame = (function () {
   
   // Start the renderer.
   renderer.setSize(WIDTH, HEIGHT);
-  renderer.setClearColorHex(0xbfd1e5, 1);
+  renderer.setClearColor(0xbfd1e5, 1);
   renderer.clear();
   renderer.shadowMapEnabled = true;
   
@@ -220,8 +220,9 @@ window.requestAnimFrame = (function () {
       //cup.rotation.z = Math.PI/4;
       cups.push(cup);
       scene.add(cup);
-      THREE.Collisions.colliders.push( THREE.CollisionUtils.MeshOBB( cupBodyMesh ))
-      THREE.Collisions.colliders.push( THREE.CollisionUtils.MeshOBB( cupBodyMeshTop ));
+        //r106 needs to be replaced
+        //THREE.Collisions.colliders.push( THREE.CollisionUtils.MeshOBB( cupBodyMesh ))
+        //THREE.Collisions.colliders.push( THREE.CollisionUtils.MeshOBB( cupBodyMeshTop ));
       }
   
   
@@ -235,10 +236,9 @@ window.requestAnimFrame = (function () {
   
   
   
-  
-  THREE.Collisions.colliders.push( THREE.CollisionUtils.MeshOBB( cube ));
-  //THREE.Collisions.colliders.push( THREE.CollisionUtils.MeshOBB( cube2 ));
-  //THREE.Collisions.colliders.push( THREE.CollisionUtils.MeshOBB( cupBodyMesh ));
+  //r106 needs to be replaced  
+  //THREE.Collisions.colliders.push( THREE.CollisionUtils.MeshOBB( cube ));
+
   
   cube.receiveShadow = true;
   // cube.castShadow = true;
@@ -294,9 +294,9 @@ window.requestAnimFrame = (function () {
       0.5
     );
     projector.unprojectVector( vector, camera );
-    var ray = new THREE.Ray( camera.position,
-      vector.subSelf( camera.position ).normalize() );
-  
+    var ray = new THREE.Raycaster( camera.position,
+              vector.sub(camera.position).normalize() );
+      
     var intersects = ray.intersectObjects( scene.children);
     if ( intersects.length > 0) {
       if(intersects[ 0 ].object.name === "sphere"){
@@ -321,7 +321,7 @@ window.requestAnimFrame = (function () {
         0.5
       );
       projector.unprojectVector( vector, camera );
-      vector.subSelf( camera.position ).normalize()
+      vector.sub( camera.position ).normalize()
       endPosition = vector
   
       //console.log(startPosition.x, endPosition.x)
@@ -383,8 +383,9 @@ window.requestAnimFrame = (function () {
         stopT = true
       }else{
         //console.log("=============")
-        var ray = new THREE.Ray(sphere.position, new THREE.Vector3(0, -1, 0));
-        var c = THREE.Collisions.rayCastNearest(ray);
+        var ray = new THREE.Raycaster(sphere.position, new THREE.Vector3(0, -1, 0));
+        //var c = THREE.Collisions.rayCastNearest(ray);
+        var c = ray.intersectObjects(ray);
   
   
         if (v.y > 0) {
@@ -435,7 +436,7 @@ window.requestAnimFrame = (function () {
         isThrowed = false
         stopT = false
       }else{
-        sphere.position.addSelf(v);
+        sphere.position.add(v);
   
       }
   
