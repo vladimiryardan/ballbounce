@@ -104,10 +104,10 @@ function runGame() {
   cupWidthBottom = 15
   
   var cupPositions = [
-    //   {
-    //       x: -cupWidthTop*3,
-    //       z: -800
-    //   },
+    // {
+    //     x: -cupWidthTop*3,
+    //     z: -800
+    // },
     // {
     //   x: -cupWidthTop,
     //   z: -800
@@ -205,9 +205,9 @@ function runGame() {
       cupTop = new THREE.Mesh(cupTopGeometry, cupTopMaterial);
       cupTop.name = 'cupTop';
       cupTop.position.set(0, cupHeigh/2, 0);
-      cupTop.rotation.x = Math.PI/2;
-  
+      cupTop.rotation.x = Math.PI/2;  
       cup.add(cupTop);
+      
       cup.position.set(cupPosition.x, cupHeigh/2, cupPosition.z);
       //cup.rotation.x = Math.PI/9;
       //cup.rotation.z = Math.PI/4;
@@ -263,7 +263,7 @@ function runGame() {
   var endPosition ;
   
   function onDocumentMouseDown( event ) {
-    //event.preventDefault();
+    event.preventDefault();
     let e = event
     if(!event.clientX){
       e = event.touches[0]
@@ -361,6 +361,8 @@ function runGame() {
         var ray = new THREE.Raycaster(sphere.position, new THREE.Vector3(0, -1, 0));
         //var c = THREE.Collisions.rayCastNearest(ray);
         //var c = ray.intersectObjects(ray);
+        
+        //recurse needs is true to include the collission of the cupBodyTop which is not added in the scene
         var c = ray.intersectObjects(scene.children);
  
         if (v.y > 0) {
@@ -373,17 +375,29 @@ function runGame() {
         }
 
       if (c.length && Math.floor(c[0].distance) <= radius) {
-          //console.log(c[0].object.name)
+          
           if( c[0].object.name === "pongBoard" || c[0].object.name === "pongLogo"){
             v.y = -v.y * (0.9);
-          }else if(c[0].object.name === "cupBodyTop"){
-            cupCollision = cups[c[0].object.uuid]
+          }
+          //ball went in
+          else if(c[0].object.name === "cupBodyTop"){
+            //console.log(c[0].object.name) 
+            //console.log(c)
+            //console.log(sphere)
+            //collission detection can be improve by checking the y position of the sphere and the cupBodyTop. sphere y position must be > than cup Y position
+            cupCollision = cups[c[0].object.uuid]            
+            v.y =  -100;
+          }          
+          else if(c[0].object.name === "cupBody"){
             //console.log(cupCollision)
             v.y =  -100;
-          }else if(c[0].object.name === "cupBody"){
+          }
+          else if(c[0].object.name === "cupBodyMaterial"){
             //console.log(cupCollision)
             v.y =  -100;
-          } 
+          }
+          
+           
         }
         if(sphere.position.x > 500 || sphere.position.x < -500 ){
           v.y =  -100;  
