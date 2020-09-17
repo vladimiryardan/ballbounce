@@ -21,7 +21,6 @@ window.requestAnimFrame = (function () {
     FAR = 10000;
   
   // Our DOM element.
-  var $container = document.getElementById('main');
   canvReference = document.getElementById("mycanvas");
 
   // WebGL renderer, camera, and scene.
@@ -48,18 +47,14 @@ window.requestAnimFrame = (function () {
   renderer.setClearColor(0xbfd1e5, 1);
   renderer.clear();
   renderer.shadowMapEnabled = true;
-  
-  // Attach the DOM element.
-  //$container.appendChild(renderer.domElement);
-  
-  
+ 
   // Floor
   var cube = new THREE.Mesh(new THREE.CubeGeometry(350, 10, 1200),
     new THREE.MeshLambertMaterial({
       color: 0x8a8a8a
     }));
-  
-  cube.name = "cube";
+    
+  cube.name = "pongBoard";
   cube.position.z = -400;
   //console.log(cube)
   scene.add(cube);
@@ -73,6 +68,7 @@ window.requestAnimFrame = (function () {
   // plane
   var plane = new THREE.Mesh(new THREE.PlaneGeometry(200, 70),img);
   plane.overdraw = true;
+  plane.name = "pongLogo";
   plane.position.y = 8
   plane.position.z = -200
   plane.rotation.x =   -Math.PI / 2 ;
@@ -82,14 +78,14 @@ window.requestAnimFrame = (function () {
   floorTexture = THREE.ImageUtils.loadTexture('images/wood_texture.jpg');
   
   
-    floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-     floorTexture.repeat.set(5,2);
-    material = new THREE.MeshBasicMaterial({map: floorTexture}),
-      mesh = new THREE.Mesh( geometry, material );
-    mesh.rotation.x =  - Math.PI / 2 ;
-    mesh.position.y =  -100;
-  
-    scene.add( mesh );
+  floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+  floorTexture.repeat.set(5,2);
+  material = new THREE.MeshBasicMaterial({map: floorTexture}),
+  mesh = new THREE.Mesh( geometry, material );
+  mesh.name = "floortexture"
+  mesh.rotation.x =  - Math.PI / 2 ;
+  mesh.position.y =  -100;
+  scene.add( mesh );
   
   
   wallTexture = THREE.ImageUtils.loadTexture('images/wall_texture.jpg');
@@ -100,53 +96,50 @@ window.requestAnimFrame = (function () {
   wall.rotation.x =   Math.PI / 2 ;
   wall.position.z= -2500
   scene.add(wall);
-  
-  //console.log(cube)
+
   var cup = new THREE.Object3D();
   cup.name = "cup";
-  
-  
   cupHeigh = 50
   cupWidthTop = 30
   cupWidthBottom = 15
   
   var cupPositions = [
-      {
-          x: -cupWidthTop*3,
-          z: -800
-      },
-    {
-      x: -cupWidthTop,
-      z: -800
-    },
-    {
-      x: cupWidthTop,
-      z: -800
-    },
-    {
-      x: cupWidthTop*3,
-      z: -800
-    },
-    {
-      x: -cupWidthTop*2,
-      z: -720
-    },
-    {
-      x: 0,
-      z: -720
-    },
-    {
-      x: cupWidthTop*2,
-      z: -720
-    },
-    {
-      x: -cupWidthTop,
-      z: -640
-    },
-    {
-      x: cupWidthTop,
-      z: -640
-    },
+    //   {
+    //       x: -cupWidthTop*3,
+    //       z: -800
+    //   },
+    // {
+    //   x: -cupWidthTop,
+    //   z: -800
+    // },
+    // {
+    //   x: cupWidthTop,
+    //   z: -800
+    // },
+    // {
+    //   x: cupWidthTop*3,
+    //   z: -800
+    // },
+    // {
+    //   x: -cupWidthTop*2,
+    //   z: -720
+    // },
+    // {
+    //   x: 0,
+    //   z: -720
+    // },
+    // {
+    //   x: cupWidthTop*2,
+    //   z: -720
+    // },
+    // {
+    //   x: -cupWidthTop,
+    //   z: -640
+    // },
+    // {
+    //   x: cupWidthTop,
+    //   z: -640
+    // },
     {
       x: 0,
       z: -560
@@ -220,25 +213,15 @@ window.requestAnimFrame = (function () {
       //cup.rotation.z = Math.PI/4;
       cups.push(cup);
       scene.add(cup);
+
         //r106 needs to be replaced
         //THREE.Collisions.colliders.push( THREE.CollisionUtils.MeshOBB( cupBodyMesh ))
         //THREE.Collisions.colliders.push( THREE.CollisionUtils.MeshOBB( cupBodyMeshTop ));
       }
-  
-  
-    //console.log(cupTop.position)
   }
-  
-  
-  
-  
-  
-  
-  
-  
+    
   //r106 needs to be replaced  
   //THREE.Collisions.colliders.push( THREE.CollisionUtils.MeshOBB( cube ));
-
   
   cube.receiveShadow = true;
   // cube.castShadow = true;
@@ -261,8 +244,6 @@ window.requestAnimFrame = (function () {
   scene.add(sphere);
   
   var mousePressed = false;
-  var activeCell = false;
-  var syncframe = 0;
   var projector = new THREE.Projector();
   var isThrowed = false
   
@@ -353,76 +334,63 @@ window.requestAnimFrame = (function () {
   // The animation function.
   var a = 0.1;
   var v = new THREE.Vector3(0, -1, 0);
-  var stopT = false
-  var MovingCube =  sphere
-  var cupCollision = null
+  var stopT = false;
+  var cupCollision = null;
   
   function update() {
   
      if(cupCollision){
        if (cupCollision.position.y < cupHeigh*2) {
          cupCollision.position.y += 1.5; // You decide on the increment, higher value will mean the objects moves faster
-       }else{
+      }else{
          if (cupCollision.position.x < 500) {
            cupCollision.position.x += 10;
          }else{
            scene.remove( cupCollision );
            cupCollision = null
          }
-           }
-        }
+      }
+    }
   
     if (isThrowed && sy>0 && !cupCollision) {
-  
-  
-  
-      /**/
   
       if(sphere.position.y <= syyy && !stopT){
         v.y = sy;
         stopT = true
       }else{
-        //console.log("=============")
         var ray = new THREE.Raycaster(sphere.position, new THREE.Vector3(0, -1, 0));
         //var c = THREE.Collisions.rayCastNearest(ray);
-        var c = ray.intersectObjects(ray);
-  
-  
+        //var c = ray.intersectObjects(ray);
+        var c = ray.intersectObjects(scene.children);
+ 
         if (v.y > 0) {
           v.y -= (v.y * a);
         } else {
           v.y += (v.y * a);
-        }
-  
+        }  
         if (v.y < 0.9 && v.y > 0) {
           v.y = -v.y;
         }
-        if (c) {
-          //	//console.log("=======",c.distance)
-        }
-        if (c && Math.floor(c.distance) <= radius) {
-          if( c.mesh.name === "cube"){
+
+      if (c.length && Math.floor(c[0].distance) <= radius) {
+          //console.log(c[0].object.name)
+          if( c[0].object.name === "pongBoard" || c[0].object.name === "pongLogo"){
             v.y = -v.y * (0.9);
-          }else if(c.mesh.name === "cupBodyTop"){
-            cupCollision = cups[c.mesh.uuid]
+          }else if(c[0].object.name === "cupBodyTop"){
+            cupCollision = cups[c[0].object.uuid]
+            //console.log(cupCollision)
             v.y =  -100;
-                  }else if(c.mesh.name === "cupBody"){
+          }else if(c[0].object.name === "cupBody"){
+            //console.log(cupCollision)
             v.y =  -100;
-                  }
-                  //console.log(c)
-  
+          } 
         }
         if(sphere.position.x > 500 || sphere.position.x < -500 ){
-          v.y =  -100;
-  
-  
+          v.y =  -100;  
         }
-  
         if(sphere.position.z <  -1000){
           //v.y =  -100;
-        }
-  
-  
+        }  
       }
   
       v.z= -sy
@@ -436,10 +404,8 @@ window.requestAnimFrame = (function () {
         isThrowed = false
         stopT = false
       }else{
-        sphere.position.add(v);
-  
-      }
-  
+        sphere.position.add(v);  
+      }  
     }
     renderer.render(scene, camera);
     requestAnimFrame(update);
