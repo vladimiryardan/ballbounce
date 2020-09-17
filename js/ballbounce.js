@@ -363,7 +363,7 @@ function runGame() {
         //var c = ray.intersectObjects(ray);
         
         //recurse needs is true to include the collission of the cupBodyTop which is not added in the scene
-        var c = ray.intersectObjects(scene.children);
+        var c = ray.intersectObjects(scene.children,true);
  
         if (v.y > 0) {
           v.y -= (v.y * a);
