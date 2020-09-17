@@ -104,42 +104,42 @@ function runGame() {
   cupWidthBottom = 15
   
   var cupPositions = [
-    // {
-    //     x: -cupWidthTop*3,
-    //     z: -800
-    // },
-    // {
-    //   x: -cupWidthTop,
-    //   z: -800
-    // },
-    // {
-    //   x: cupWidthTop,
-    //   z: -800
-    // },
-    // {
-    //   x: cupWidthTop*3,
-    //   z: -800
-    // },
-    // {
-    //   x: -cupWidthTop*2,
-    //   z: -720
-    // },
-    // {
-    //   x: 0,
-    //   z: -720
-    // },
-    // {
-    //   x: cupWidthTop*2,
-    //   z: -720
-    // },
-    // {
-    //   x: -cupWidthTop,
-    //   z: -640
-    // },
-    // {
-    //   x: cupWidthTop,
-    //   z: -640
-    // },
+    {
+        x: -cupWidthTop*3,
+        z: -800
+    },
+    {
+      x: -cupWidthTop,
+      z: -800
+    },
+    {
+      x: cupWidthTop,
+      z: -800
+    },
+    {
+      x: cupWidthTop*3,
+      z: -800
+    },
+    {
+      x: -cupWidthTop*2,
+      z: -720
+    },
+    {
+      x: 0,
+      z: -720
+    },
+    {
+      x: cupWidthTop*2,
+      z: -720
+    },
+    {
+      x: -cupWidthTop,
+      z: -640
+    },
+    {
+      x: cupWidthTop,
+      z: -640
+    },
     {
       x: 0,
       z: -560
