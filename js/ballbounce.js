@@ -66,7 +66,7 @@ function runGame() {
   img.map.needsUpdate = true; //ADDED
   
   // plane
-  var plane = new THREE.Mesh(new THREE.PlaneGeometry(200, 70),img);
+  var plane = new THREE.Mesh(new THREE.PlaneBufferGeometry(200, 70),img);
   plane.overdraw = true;
   plane.name = "pongLogo";
   plane.position.y = 8
@@ -74,7 +74,7 @@ function runGame() {
   plane.rotation.x =   -Math.PI / 2 ;
   scene.add(plane);
   
-  geometry = new THREE.PlaneGeometry( 5000, 2500, 10, 10 );
+  geometry = new THREE.PlaneBufferGeometry( 5000, 2500, 10, 10 );
   floorTexture = THREE.ImageUtils.loadTexture('images/wood_texture.jpg');
   
   
@@ -163,7 +163,7 @@ function runGame() {
        *****************************************************/
   
   
-      cupBodyGeometry = new THREE.CylinderGeometry(cupWidthTop, cupWidthBottom, cupHeigh, 200, 100, true);
+      cupBodyGeometry = new THREE.CylinderBufferGeometry(cupWidthTop, cupWidthBottom, cupHeigh, 200, 100, true);
   
       cupBodyMaterial = new THREE.MeshLambertMaterial({
         color: 0xFF0000,
@@ -176,7 +176,7 @@ function runGame() {
       cup.add(cupBodyMesh);
   
   
-      cupBodyGeometryTop = new THREE.CylinderGeometry(cupWidthTop, cupWidthBottom, 1, 200, 100, false);
+      cupBodyGeometryTop = new THREE.CylinderBufferGeometry(cupWidthTop, cupWidthBottom, 1, 200, 100, false);
   
       cupBodyMaterialTop = new THREE.MeshLambertMaterial({
         color: 0xFFFFFF,
@@ -195,7 +195,7 @@ function runGame() {
        *   TOP                                             *
        *****************************************************/
   
-      cupTopGeometry = new THREE.TorusGeometry(cupWidthTop, 3, 50, 50);
+      cupTopGeometry = new THREE.TorusBufferGeometry(cupWidthTop, 3, 50, 50);
       cupTopMaterial = new THREE.MeshBasicMaterial({
         color: 0xFFFFFF,
         side: 2,
@@ -233,7 +233,7 @@ function runGame() {
   });
   
   var sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(radius,
+    new THREE.SphereBufferGeometry(radius,
       segments,
       rings),
     sphereMaterial)
