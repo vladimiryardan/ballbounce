@@ -185,6 +185,7 @@ function runGame() {
       });
       cupBodyMaterialTop.name = "cupBodyMaterialTop";
       cupBodyMeshTop = new THREE.Mesh(cupBodyGeometryTop, cupBodyMaterialTop)
+
       cupBodyMeshTop.name = 'cupBodyTop';
       cupBodyMeshTop.uuid = i;
       cupBodyMeshTop.position.set(0, cupHeigh/2, 0);
@@ -324,7 +325,8 @@ function runGame() {
   pointLight.position.y = 200;
   pointLight.position.z = 100;
   scene.add(pointLight);
-  
+
+
   var pointLight1 = new THREE.SpotLight(0xFFFFFF, .7);
   pointLight1.position.y = 500;
   pointLight1.castShadow = true;
@@ -379,17 +381,23 @@ function runGame() {
           if( c[0].object.name === "pongBoard" || c[0].object.name === "pongLogo"){
             v.y = -v.y * (0.9);
           }
-          //ball went in
+          else if(c[0].object.name === "cupBody"){
+            //console.log(cupCollision)
+            // console.log(c[0].object)
+            // console.log(v.y)
+            // console.log(v.x)
+            v.y =  -100;
+          }
+          else if(c[0].object.name === "cupTop"){
+            v.y =  -100;
+          }         
+          //ball went in the cup
           else if(c[0].object.name === "cupBodyTop"){
             //console.log(c[0].object.name) 
             //console.log(c)
             //console.log(sphere)
             //collission detection can be improve by checking the y position of the sphere and the cupBodyTop. sphere y position must be > than cup Y position
             cupCollision = cups[c[0].object.uuid]            
-            v.y =  -100;
-          }          
-          else if(c[0].object.name === "cupBody"){
-            //console.log(cupCollision)
             v.y =  -100;
           }
           else if(c[0].object.name === "cupBodyMaterial"){
