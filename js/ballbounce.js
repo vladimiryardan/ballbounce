@@ -1,5 +1,5 @@
 function runGame() {
-window.requestAnimFrame = (function () {
+  window.requestAnimFrame = (function () {
     return  window.requestAnimationFrame       ||
       window.webkitRequestAnimationFrame ||
       window.mozRequestAnimationFrame    ||
@@ -408,9 +408,9 @@ window.requestAnimFrame = (function () {
       }  
     }
     renderer.render(scene, camera);
-    requestAnimFrame(update);
+    requestAnimationFrame(update);
   }
-  requestAnimFrame(update);
+  requestAnimationFrame(update);
   renderer.render(scene, camera);
   
   window.addEventListener( 'resize', onWindowResize, false );
